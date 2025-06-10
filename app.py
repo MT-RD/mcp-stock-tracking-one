@@ -215,6 +215,255 @@ def search_stock(symbol):
 
 **💡 Tip**: Try one of the available demo symbols above to see the full analysis interface!"""
 
+def search_stock_enhanced(symbol):
+    """Enhanced search function that returns organized data for multiple UI components"""
+    if not symbol.strip():
+        empty_status = """
+        <div class="info-card">
+            <h4>⚠️ Input Required</h4>
+            <p style="text-align: center; color: #ef4444;">
+                Please enter a stock symbol
+            </p>
+        </div>
+        """
+        return (
+            "⚠️ Please enter a stock symbol!",
+            "",
+            empty_status,
+            empty_status
+        )
+    
+    symbol = symbol.upper().strip()
+    
+    # Mock data for demonstration with realistic stock information
+    mock_data = {
+        "AAPL": {
+            "name": "Apple Inc.",
+            "price": 189.42,
+            "change": +2.35,
+            "change_percent": +1.26,
+            "volume": "45.2M",
+            "market_cap": "2.95T",
+            "pe_ratio": 28.5,
+            "recommendation": "BUY"
+        },
+        "GOOGL": {
+            "name": "Alphabet Inc.",
+            "price": 142.56,
+            "change": -1.23,
+            "change_percent": -0.85,
+            "volume": "28.7M",
+            "market_cap": "1.78T",
+            "pe_ratio": 24.2,
+            "recommendation": "HOLD"
+        },
+        "MSFT": {
+            "name": "Microsoft Corporation",
+            "price": 378.85,
+            "change": +5.67,
+            "change_percent": +1.52,
+            "volume": "32.1M",
+            "market_cap": "2.81T",
+            "pe_ratio": 31.8,
+            "recommendation": "BUY"
+        },
+        "TSLA": {
+            "name": "Tesla Inc.",
+            "price": 248.98,
+            "change": -8.45,
+            "change_percent": -3.28,
+            "volume": "67.4M",
+            "market_cap": "793B",
+            "pe_ratio": 45.7,
+            "recommendation": "HOLD"
+        },
+        "NVDA": {
+            "name": "NVIDIA Corporation",
+            "price": 891.23,
+            "change": +15.78,
+            "change_percent": +1.80,
+            "volume": "41.8M",
+            "market_cap": "2.20T",
+            "pe_ratio": 65.4,
+            "recommendation": "BUY"
+        },
+        "AMZN": {
+            "name": "Amazon.com Inc.",
+            "price": 156.78,
+            "change": +3.12,
+            "change_percent": +2.03,
+            "volume": "38.9M",
+            "market_cap": "1.64T",
+            "pe_ratio": 42.1,
+            "recommendation": "BUY"
+        },
+        "META": {
+            "name": "Meta Platforms Inc.",
+            "price": 298.45,
+            "change": -2.89,
+            "change_percent": -0.96,
+            "volume": "22.6M",
+            "market_cap": "756B",
+            "pe_ratio": 23.8,
+            "recommendation": "HOLD"
+        }
+    }
+    
+    if symbol in mock_data:
+        data = mock_data[symbol]
+        change_emoji = "📈" if data["change"] > 0 else "📉"
+        change_color = "🟢" if data["change"] > 0 else "🔴"
+        
+        # Determine trend and volatility
+        if abs(data["change_percent"]) > 3:
+            volatility = "High"
+            vol_emoji = "⚡"
+        elif abs(data["change_percent"]) > 1:
+            volatility = "Moderate"
+            vol_emoji = "📊"
+        else:
+            volatility = "Low"
+            vol_emoji = "😌"
+        
+        trend = "Bullish 🐂" if data["change"] > 0 else "Bearish 🐻"
+        
+        # Recommendation styling
+        rec_map = {
+            "BUY": "🟢 BUY",
+            "HOLD": "🟡 HOLD", 
+            "SELL": "🔴 SELL"
+        }
+        rec_display = rec_map.get(data["recommendation"], data["recommendation"])
+        
+        # Stock Information (Main Display)
+        stock_info = f"""# 📊 {data['name']} ({symbol})
+
+## 💰 Current Price: ${data['price']:.2f}
+### {change_color} Daily Change: {data['change']:+.2f} ({data['change_percent']:+.2f}%)
+
+#### 📈 Market Data
+- **Volume**: {data['volume']}
+- **Market Cap**: ${data['market_cap']}
+- **P/E Ratio**: {data['pe_ratio']}
+- **Trend**: {trend}
+"""
+
+        # Investment Analysis (Separate Display)  
+        analysis_info = f"""## 🎯 Investment Analysis
+
+### {rec_display}
+
+#### 📊 Key Metrics
+- **Risk Level**: {"Low" if data["pe_ratio"] < 25 else "Moderate" if data["pe_ratio"] < 40 else "High"}
+- **Volatility**: {vol_emoji} {volatility}
+- **Growth Potential**: {"High" if data["change_percent"] > 1 else "Moderate"}
+
+*Note: This is demo data for testing purposes.*
+"""
+
+        # Quick Stats (HTML Card)
+        quick_stats = f"""
+        <div class="info-card">
+            <h4>⚡ Quick Stats</h4>
+            <div style="text-align: center;">
+                <p style="font-size: 1.5em; margin: 0.5rem 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'};">
+                    ${data['price']:.2f}
+                </p>
+                <p style="margin: 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'};">
+                    {data['change']:+.2f} ({data['change_percent']:+.2f}%)
+                </p>
+                <hr style="margin: 1rem 0;">
+                <p style="margin: 0.25rem 0;"><strong>Volume:</strong> {data['volume']}</p>
+                <p style="margin: 0.25rem 0;"><strong>P/E:</strong> {data['pe_ratio']}</p>
+                <p style="margin: 0.25rem 0;"><strong>Cap:</strong> ${data['market_cap']}</p>
+            </div>
+        </div>
+        """
+        
+        # Search Status (HTML Card)
+        search_status = f"""
+        <div class="info-card">
+            <h4>✅ Search Complete</h4>
+            <div style="text-align: center;">
+                <p style="margin: 0.5rem 0; color: #10b981;">
+                    <strong>{symbol}</strong> found!
+                </p>
+                <p style="margin: 0; font-size: 0.9em; color: #64748b;">
+                    Demo data loaded<br>
+                    Real-time coming soon
+                </p>
+                <hr style="margin: 1rem 0;">
+                <p style="margin: 0; font-size: 2em;">
+                    {rec_map.get(data["recommendation"], data["recommendation"])}
+                </p>
+            </div>
+        </div>
+        """
+        
+        return stock_info, analysis_info, quick_stats, search_status
+    
+    else:
+        # Handle unknown symbols
+        popular_symbols = ["AAPL", "GOOGL", "MSFT", "TSLA", "NVDA", "AMZN", "META"]
+        
+        stock_info = f"""# 🔍 Searching for {symbol}
+
+## ⚠️ Demo Mode Active
+
+Currently showing sample data for popular stocks only.
+
+### 📝 Available Demo Symbols:
+{', '.join(popular_symbols)}
+
+### 🔄 Symbol Entered: `{symbol}`
+This symbol will be supported with real-time data in the next update!
+"""
+
+        analysis_info = """## 🚀 What's Coming
+
+### Real-time Features:
+- Live data for **all** stock symbols
+- MCP server integration with market feeds  
+- Advanced technical analysis
+- Portfolio tracking and alerts
+
+**💡 Tip**: Try one of the available demo symbols to see the full interface!
+"""
+
+        quick_stats = f"""
+        <div class="info-card">
+            <h4>📋 Symbol Status</h4>
+            <div style="text-align: center;">
+                <p style="font-size: 1.2em; margin: 0.5rem 0; color: #f59e0b;">
+                    {symbol}
+                </p>
+                <p style="margin: 0; color: #64748b;">
+                    Not in demo data
+                </p>
+                <hr style="margin: 1rem 0;">
+                <p style="margin: 0.25rem 0; font-size: 0.9em;">Try: AAPL, GOOGL,</p>
+                <p style="margin: 0.25rem 0; font-size: 0.9em;">MSFT, TSLA, NVDA</p>
+            </div>
+        </div>
+        """
+        
+        search_status = """
+        <div class="info-card">
+            <h4>🔄 Search Status</h4>
+            <div style="text-align: center;">
+                <p style="margin: 0.5rem 0; color: #f59e0b;">
+                    Symbol not found
+                </p>
+                <p style="margin: 0; font-size: 0.9em; color: #64748b;">
+                    Demo mode only<br>
+                    Limited symbols
+                </p>
+            </div>
+        </div>
+        """
+        
+        return stock_info, analysis_info, quick_stats, search_status
+
 def create_interface():
     """Create a styled Gradio interface with tabs"""
     with gr.Blocks(
@@ -252,18 +501,54 @@ def create_interface():
                 
                 gr.HTML('</div>')
                 
-                # Output area for search results - using Markdown for proper formatting
-                result_output = gr.Markdown(
-                    label="📋 Search Results",
-                    value="Enter a stock symbol and click Search to see results...",
-                    height=400
-                )
+                # Enhanced Output Layout with multiple components
+                with gr.Row():
+                    # Left Column - Main Results
+                    with gr.Column(scale=2):
+                        stock_info = gr.Markdown(
+                            label="📊 Stock Information",
+                            value="Enter a stock symbol and click Search to see detailed information...",
+                            height=250
+                        )
+                        
+                        analysis_info = gr.Markdown(
+                            label="� Investment Analysis",
+                            value="Analysis results will appear here...",
+                            height=200
+                        )
+                    
+                    # Right Column - Quick Stats & Status
+                    with gr.Column(scale=1):
+                        quick_stats = gr.HTML(
+                            value="""
+                            <div class="info-card">
+                                <h4>📋 Quick Stats</h4>
+                                <p style="text-align: center; color: #64748b;">
+                                    Search for a stock to see<br>
+                                    quick statistics here
+                                </p>
+                            </div>
+                            """,
+                            label="Quick Statistics"
+                        )
+                        
+                        search_status = gr.HTML(
+                            value="""
+                            <div class="info-card">
+                                <h4>🔍 Search Status</h4>
+                                <p style="text-align: center; color: #64748b;">
+                                    Ready to search
+                                </p>
+                            </div>
+                            """,
+                            label="Status"
+                        )
                 
-                # Connect button click to handler function
+                # Connect button click to enhanced handler functions
                 search_btn.click(
-                    fn=search_stock,
+                    fn=search_stock_enhanced,
                     inputs=symbol_input,
-                    outputs=result_output
+                    outputs=[stock_info, analysis_info, quick_stats, search_status]
                 )
             
             # About Tab with enhanced cards
