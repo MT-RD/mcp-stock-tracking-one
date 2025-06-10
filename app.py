@@ -21,7 +21,61 @@ custom_css = """
     padding: 2rem;
     border-radius: 12px;
     margin: 1rem 0;
-    border: 1px solid #e2e8f0;
+    border: 1p                    #                                                   # Left Column - Main Results
+                    with gr.Column(scale=2):
+                        stock_info = gr.Markdown(
+                            label="📊 Stock Information",
+                            value="Enter a stock symbol and click Search to see detailed information...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )
+                        
+                        analysis_info = gr.Markdown(
+                            label="📈 Investment Analysis",
+                            value="Analysis results will appear here...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )tock_info = gr.Markdown(
+                            label="📊 Stock Information",
+                            value="Enter a stock symbol and click Search to see detailed information...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )
+                        
+                        analysis_info = gr.Markdown(
+                            label="📈 Investment Analysis",
+                            value="Analysis results will appear here...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )lumn - Main Results
+                    with gr.Column(scale=2):
+                        stock_info = gr.Markdown(
+                            label="📊 Stock Information",
+                            value="Enter a stock symbol and click Search to see detailed information...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )
+                        
+                        analysis_info = gr.Markdown(
+                            label="📈 Investment Analysis",
+                            value="Analysis results will appear here...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        ) Main Results
+                    with gr.Column(scale=2):
+                        stock_info = gr.Markdown(
+                            label="📊 Stock Information",
+                            value="Enter a stock symbol and click Search to see detailed information...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )
+                        
+                        analysis_info = gr.Markdown(
+                            label="📈 Investment Analysis",
+                            value="Analysis results will appear here...",
+                            elem_classes=["main-content-card"],
+                            show_label=False
+                        )f0;
 }
 
 .info-card {
@@ -32,6 +86,26 @@ custom_css = """
     margin: 1rem 0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     border-left: 4px solid #667eea;
+}
+
+.compact-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border-left: 3px solid #667eea;
+}
+
+.main-content-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
 }
 
 .roadmap-item {
@@ -361,41 +435,45 @@ def search_stock_enhanced(symbol):
 *Note: This is demo data for testing purposes.*
 """
 
-        # Quick Stats (HTML Card)
+        # Quick Stats (Compact HTML Card)
         quick_stats = f"""
-        <div class="info-card">
-            <h4>⚡ Quick Stats</h4>
+        <div class="compact-card">
+            <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">⚡ Quick Stats</h4>
             <div style="text-align: center;">
-                <p style="font-size: 1.5em; margin: 0.5rem 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'};">
+                <div style="font-size: 1.4em; font-weight: bold; margin: 0.5rem 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'};">
                     ${data['price']:.2f}
-                </p>
-                <p style="margin: 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'};">
+                </div>
+                <div style="margin: 0 0 0.75rem 0; color: {'#10b981' if data['change'] > 0 else '#ef4444'}; font-size: 0.9rem;">
                     {data['change']:+.2f} ({data['change_percent']:+.2f}%)
-                </p>
-                <hr style="margin: 1rem 0;">
-                <p style="margin: 0.25rem 0;"><strong>Volume:</strong> {data['volume']}</p>
-                <p style="margin: 0.25rem 0;"><strong>P/E:</strong> {data['pe_ratio']}</p>
-                <p style="margin: 0.25rem 0;"><strong>Cap:</strong> ${data['market_cap']}</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.85rem; color: #64748b;">
+                    <span><strong>Vol:</strong> {data['volume']}</span>
+                    <span><strong>P/E:</strong> {data['pe_ratio']}</span>
+                </div>
+                <div style="font-size: 0.85rem; color: #64748b;">
+                    <strong>Cap:</strong> ${data['market_cap']}
+                </div>
             </div>
         </div>
         """
         
-        # Search Status (HTML Card)
+        # Search Status (Compact HTML Card)
         search_status = f"""
-        <div class="info-card">
-            <h4>✅ Search Complete</h4>
+        <div class="compact-card">
+            <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">✅ Found</h4>
             <div style="text-align: center;">
-                <p style="margin: 0.5rem 0; color: #10b981;">
-                    <strong>{symbol}</strong> found!
-                </p>
-                <p style="margin: 0; font-size: 0.9em; color: #64748b;">
-                    Demo data loaded<br>
-                    Real-time coming soon
-                </p>
-                <hr style="margin: 1rem 0;">
-                <p style="margin: 0; font-size: 2em;">
+                <div style="margin: 0.5rem 0; color: #10b981; font-weight: bold;">
+                    {symbol}
+                </div>
+                <div style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #64748b;">
+                    Demo data loaded
+                </div>
+                <div style="font-size: 1.2em; margin: 0.5rem 0;">
                     {rec_map.get(data["recommendation"], data["recommendation"])}
-                </p>
+                </div>
+                <div style="font-size: 0.8rem; color: #64748b;">
+                    Real-time coming soon
+                </div>
             </div>
         </div>
         """
@@ -431,33 +509,35 @@ This symbol will be supported with real-time data in the next update!
 """
 
         quick_stats = f"""
-        <div class="info-card">
-            <h4>📋 Symbol Status</h4>
+        <div class="compact-card">
+            <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Symbol Status</h4>
             <div style="text-align: center;">
-                <p style="font-size: 1.2em; margin: 0.5rem 0; color: #f59e0b;">
+                <div style="font-size: 1.1em; font-weight: bold; margin: 0.5rem 0; color: #f59e0b;">
                     {symbol}
-                </p>
-                <p style="margin: 0; color: #64748b;">
+                </div>
+                <div style="margin: 0 0 0.75rem 0; color: #64748b; font-size: 0.85rem;">
                     Not in demo data
-                </p>
-                <hr style="margin: 1rem 0;">
-                <p style="margin: 0.25rem 0; font-size: 0.9em;">Try: AAPL, GOOGL,</p>
-                <p style="margin: 0.25rem 0; font-size: 0.9em;">MSFT, TSLA, NVDA</p>
+                </div>
+                <div style="font-size: 0.8rem; color: #64748b; line-height: 1.3;">
+                    Try: AAPL, GOOGL, MSFT, TSLA, NVDA, AMZN, META
+                </div>
             </div>
         </div>
         """
         
         search_status = """
-        <div class="info-card">
-            <h4>🔄 Search Status</h4>
+        <div class="compact-card">
+            <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">🔄 Status</h4>
             <div style="text-align: center;">
-                <p style="margin: 0.5rem 0; color: #f59e0b;">
-                    Symbol not found
-                </p>
-                <p style="margin: 0; font-size: 0.9em; color: #64748b;">
-                    Demo mode only<br>
-                    Limited symbols
-                </p>
+                <div style="margin: 0.5rem 0; color: #f59e0b; font-weight: bold;">
+                    Not Found
+                </div>
+                <div style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #64748b;">
+                    Demo mode only
+                </div>
+                <div style="font-size: 0.8rem; color: #64748b;">
+                    Limited symbols available
+                </div>
             </div>
         </div>
         """
@@ -508,40 +588,41 @@ def create_interface():
                         stock_info = gr.Markdown(
                             label="📊 Stock Information",
                             value="Enter a stock symbol and click Search to see detailed information...",
-                            height=250
+                            elem_classes=["main-content-card"],
+                            show_label=False
                         )
                         
                         analysis_info = gr.Markdown(
                             label="� Investment Analysis",
                             value="Analysis results will appear here...",
-                            height=200
+                            elem_classes=["main-content-card"],
+                            show_label=False
                         )
                     
-                    # Right Column - Quick Stats & Status
+                    # Right Column - Compact Quick Stats & Status
                     with gr.Column(scale=1):
                         quick_stats = gr.HTML(
                             value="""
-                            <div class="info-card">
-                                <h4>📋 Quick Stats</h4>
-                                <p style="text-align: center; color: #64748b;">
-                                    Search for a stock to see<br>
-                                    quick statistics here
-                                </p>
+                            <div class="compact-card">
+                                <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Quick Stats</h4>
+                                <div style="text-align: center; color: #64748b; font-size: 0.9rem;">
+                                    Search for a stock to see quick statistics
+                                </div>
                             </div>
                             """,
-                            label="Quick Statistics"
+                            show_label=False
                         )
                         
                         search_status = gr.HTML(
                             value="""
-                            <div class="info-card">
-                                <h4>🔍 Search Status</h4>
-                                <p style="text-align: center; color: #64748b;">
+                            <div class="compact-card">
+                                <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem;">🔍 Status</h4>
+                                <div style="text-align: center; color: #64748b; font-size: 0.9rem;">
                                     Ready to search
-                                </p>
+                                </div>
                             </div>
                             """,
-                            label="Status"
+                            show_label=False
                         )
                 
                 # Connect button click to enhanced handler functions
