@@ -61,11 +61,159 @@ custom_css = """
 """
 
 def search_stock(symbol):
-    """Simple placeholder function for stock search"""
+    """Enhanced placeholder function with realistic mock data"""
     if not symbol.strip():
         return "⚠️ Please enter a stock symbol!"
     
-    return f"🔍 Searching for {symbol.upper()}...\n\n✨ Coming soon! MCP server connection will be added in the next update.\n\n📊 Features being developed:\n• Real-time stock prices\n• Investment analysis\n• Smart recommendations\n• Portfolio tracking"
+    symbol = symbol.upper().strip()
+    
+    # Mock data for demonstration with realistic stock information
+    mock_data = {
+        "AAPL": {
+            "name": "Apple Inc.",
+            "price": 189.42,
+            "change": +2.35,
+            "change_percent": +1.26,
+            "volume": "45.2M",
+            "market_cap": "2.95T",
+            "pe_ratio": 28.5,
+            "recommendation": "BUY"
+        },
+        "GOOGL": {
+            "name": "Alphabet Inc.",
+            "price": 142.56,
+            "change": -1.23,
+            "change_percent": -0.85,
+            "volume": "28.7M",
+            "market_cap": "1.78T",
+            "pe_ratio": 24.2,
+            "recommendation": "HOLD"
+        },
+        "MSFT": {
+            "name": "Microsoft Corporation",
+            "price": 378.85,
+            "change": +5.67,
+            "change_percent": +1.52,
+            "volume": "32.1M",
+            "market_cap": "2.81T",
+            "pe_ratio": 31.8,
+            "recommendation": "BUY"
+        },
+        "TSLA": {
+            "name": "Tesla Inc.",
+            "price": 248.98,
+            "change": -8.45,
+            "change_percent": -3.28,
+            "volume": "67.4M",
+            "market_cap": "793B",
+            "pe_ratio": 45.7,
+            "recommendation": "HOLD"
+        },
+        "NVDA": {
+            "name": "NVIDIA Corporation",
+            "price": 891.23,
+            "change": +15.78,
+            "change_percent": +1.80,
+            "volume": "41.8M",
+            "market_cap": "2.20T",
+            "pe_ratio": 65.4,
+            "recommendation": "BUY"
+        },
+        "AMZN": {
+            "name": "Amazon.com Inc.",
+            "price": 156.78,
+            "change": +3.12,
+            "change_percent": +2.03,
+            "volume": "38.9M",
+            "market_cap": "1.64T",
+            "pe_ratio": 42.1,
+            "recommendation": "BUY"
+        },
+        "META": {
+            "name": "Meta Platforms Inc.",
+            "price": 298.45,
+            "change": -2.89,
+            "change_percent": -0.96,
+            "volume": "22.6M",
+            "market_cap": "756B",
+            "pe_ratio": 23.8,
+            "recommendation": "HOLD"
+        }
+    }
+    
+    if symbol in mock_data:
+        data = mock_data[symbol]
+        change_emoji = "📈" if data["change"] > 0 else "📉"
+        change_color = "🟢" if data["change"] > 0 else "🔴"
+        
+        # Determine trend and volatility
+        if abs(data["change_percent"]) > 3:
+            volatility = "High"
+            vol_emoji = "⚡"
+        elif abs(data["change_percent"]) > 1:
+            volatility = "Moderate"
+            vol_emoji = "📊"
+        else:
+            volatility = "Low"
+            vol_emoji = "😌"
+        
+        trend = "Bullish 🐂" if data["change"] > 0 else "Bearish 🐻"
+        
+        # Recommendation styling
+        rec_map = {
+            "BUY": "🟢 BUY",
+            "HOLD": "🟡 HOLD", 
+            "SELL": "🔴 SELL"
+        }
+        rec_display = rec_map.get(data["recommendation"], data["recommendation"])
+        
+        return f"""� **Stock Analysis for {symbol}**
+
+## �📊 {data['name']}
+
+### 💰 **Price Information**
+- **Current Price**: ${data['price']:.2f}
+- **Daily Change**: {change_color} {data['change']:+.2f} ({data['change_percent']:+.2f}%)
+- **Volume**: {data['volume']}
+
+### 📈 **Market Data**
+- **Market Cap**: ${data['market_cap']}
+- **P/E Ratio**: {data['pe_ratio']}
+- **Trend**: {trend}
+- **Volatility**: {vol_emoji} {volatility}
+
+### 🎯 **Investment Analysis** (Demo)
+- **Recommendation**: {rec_display}
+- **Risk Level**: {"Low" if data["pe_ratio"] < 25 else "Moderate" if data["pe_ratio"] < 40 else "High"}
+- **Growth Potential**: {"High" if data["change_percent"] > 1 else "Moderate"}
+
+---
+
+✨ **Note**: This is demo data for testing purposes. 
+🚀 **Coming Soon**: Real-time data via MCP server connection!"""
+    
+    else:
+        # Handle unknown symbols with helpful suggestions
+        popular_symbols = ["AAPL", "GOOGL", "MSFT", "TSLA", "NVDA", "AMZN", "META"]
+        suggestions = ", ".join(popular_symbols)
+        
+        return f"""🔍 **Searching for {symbol}**...
+
+⚠️ **Demo Mode**: Currently showing sample data for popular stocks
+
+📝 **Available Demo Symbols**: 
+{suggestions}
+
+🔄 **Symbol Entered**: `{symbol}`
+📊 **Status**: Will be supported with real-time data in the next update!
+
+### 🚀 **What's Coming**:
+- Real-time data for **all** stock symbols
+- MCP server integration with live market feeds
+- Advanced technical analysis and indicators
+- Portfolio tracking and alerts
+
+**💡 Tip**: Try one of the available demo symbols above to see the full analysis interface!"""
 
 def create_interface():
     """Create a styled Gradio interface with tabs"""
@@ -104,12 +252,11 @@ def create_interface():
                 
                 gr.HTML('</div>')
                 
-                # Output area for search results
-                result_output = gr.Textbox(
-                    label="📋 Search Results", 
-                    lines=6,
-                    interactive=False,
-                    placeholder="Enter a stock symbol and click Search to see results..."
+                # Output area for search results - using Markdown for proper formatting
+                result_output = gr.Markdown(
+                    label="📋 Search Results",
+                    value="Enter a stock symbol and click Search to see results...",
+                    height=400
                 )
                 
                 # Connect button click to handler function
